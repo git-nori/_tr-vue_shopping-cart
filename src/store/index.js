@@ -21,6 +21,10 @@ export default new Vuex.Store({
     },
     incrementItemQuantity (state, cartItem) {
       cartItem.quantity++
+    },
+    decrementProductIventory(state, { id }){
+      const product = state.products.find(product => product.id === id)
+      product.inventory--
     }
   },
   actions: {
@@ -34,6 +38,7 @@ export default new Vuex.Store({
       } else {
         commit('incrementItemQuantity', cartItem)
       }
+      commit('decrementProductIventory', product)
     }
   },
   getters: {
