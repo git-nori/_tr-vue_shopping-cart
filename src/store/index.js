@@ -10,25 +10,33 @@ export default new Vuex.Store({
     items: [],
   },
   mutations: {
-    setProducts(state, products){
+    setProducts (state, products) {
       state.products = products
     },
-    pushProductToCart(state, product){
+    pushProductToCart (state, product) {
       state.items.push({
         id: product.id,
         quantity: 1
       })
+    },
+    incrementItemQuantity (state, cartItem) {
+      cartItem.quantity++
     }
   },
   actions: {
-    getAllProducts({commit}){
+    getAllProducts ({ commit }) {
       shop.getProducts(products => { commit('setProducts', products) })
     },
-    addProductToCart({commit}, product){
-      commit('pushProductToCart', product)
+    addProductToCart ({ state, commit }, product) {
+      const cartItem = state.items.find(item => item.id === product.id)
+      if (!cartItem) {
+        commit('pushProductToCart', product)
+      } else {
+        commit('incrementItemQuantity', cartItem)
+      }
     }
   },
-  getters:{
+  getters: {
     // items内のidと合致するproductのtitle, price, quantityを返す
     cartProducts: state => {
       return state.items.map(item => {
