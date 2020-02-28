@@ -10,16 +10,22 @@
           <ProductList />
         </b-col>
       </b-row>
+      <b-row class="mt-3">
+        <b-col>
+          <ShoppingCart />
+        </b-col>
+      </b-row>
     </b-container>
   </div>
 </template>
 
 <script>
 import ProductList from "@/components/ProductList.vue";
+import ShoppingCart from "@/components/ShoppingCart.vue";
 
 export default {
   name: "app",
-  components: { ProductList }
+  components: { ProductList, ShoppingCart }
 };
 </script>
 

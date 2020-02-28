@@ -28,5 +28,18 @@ export default new Vuex.Store({
       commit('pushProductToCart', product)
     }
   },
+  getters:{
+    // items内のidと合致するproductのtitle, price, quantityを返す
+    cartProducts: state => {
+      return state.items.map(item => {
+        const product = state.products.find(product => product.id === item.id)
+        return {
+          title: product.title,
+          price: product.price,
+          quantity: item.quantity
+        }
+      })
+    }
+  },
   modules: {}
 });
