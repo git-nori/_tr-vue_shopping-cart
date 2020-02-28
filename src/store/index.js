@@ -22,7 +22,7 @@ export default new Vuex.Store({
     incrementItemQuantity (state, cartItem) {
       cartItem.quantity++
     },
-    decrementProductIventory(state, { id }){
+    decrementProductIventory (state, { id }) {
       const product = state.products.find(product => product.id === id)
       product.inventory--
     }
@@ -52,6 +52,11 @@ export default new Vuex.Store({
           quantity: item.quantity
         }
       })
+    },
+    cartTotalPrice: (state, getters) => {
+      return getters.cartProducts.reduce((total, product) => {
+        return total + product.price * product.quantity
+      }, 0)
     }
   },
   modules: {}

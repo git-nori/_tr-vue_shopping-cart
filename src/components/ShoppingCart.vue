@@ -11,6 +11,7 @@
         </b-list-group-item>
       </div>
     </b-list-group>
+    <h3 v-show="cartTotalPrice">Total: {{cartTotalPrice}}</h3>
   </div>
 </template>
 
@@ -20,7 +21,7 @@ import { mapGetters } from "vuex";
 export default {
   name: "ShoppingCart",
   computed: {
-    ...mapGetters(["cartProducts"])
+    ...mapGetters(["cartProducts", "cartTotalPrice"])
   }
 };
 </script>
