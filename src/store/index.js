@@ -8,6 +8,7 @@ export default new Vuex.Store({
   state: {
     products: [],
     items: [],
+    checkoutStatus: null
   },
   mutations: {
     setProducts (state, products) {
@@ -25,6 +26,12 @@ export default new Vuex.Store({
     decrementProductIventory (state, { id }) {
       const product = state.products.find(product => product.id === id)
       product.inventory--
+    },
+    setCheckoutStatus (state, status) {
+      state.checkoutStatus = status
+    },
+    setCartItems (state, { items }){
+      state.items = items
     }
   },
   actions: {
@@ -39,6 +46,24 @@ export default new Vuex.Store({
         commit('incrementItemQuantity', cartItem)
       }
       commit('decrementProductIventory', product)
+    },
+    checkout ({ state, commit }, cartProducts) {
+      // 購入処理を行う
+      const savedCartItems = state.items
+
+      shop.buyProducts (
+        cartProducts,
+        () => {
+          // 購入処理成功時
+          commit('setCheckoutStatus', true)
+          commit('setCartItems', { items: [] })  // cartItemsを空にする
+        },
+        () => {
+          // 購入処理失敗時
+          commit('setCheckoutStatus', false)
+          commit('setCartItems', { items: savedCartItems })
+        }
+      )
     }
   },
   getters: {
@@ -57,6 +82,10 @@ export default new Vuex.Store({
       return getters.cartProducts.reduce((total, product) => {
         return total + product.price * product.quantity
       }, 0)
+    },
+    checkoutStatusMsg: state => {
+      return state.checkoutStatus===null ? '' : 
+        state.checkoutStatus ? 'successful' : 'failed'
     }
   },
   modules: {}
